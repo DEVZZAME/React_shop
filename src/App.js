@@ -1,7 +1,14 @@
-import { Button, Container, Nav, Navbar, Row, Col } from "react-bootstrap";
+import { Fragment, useState } from "react";
+import { Container, Nav, Navbar, Row, Col } from "react-bootstrap";
 import "./App.css";
+import data from './data.js';
+import {Routes, Route, Link} from 'react-router-dom';
+import Detail from './routes/Detail.js';
 
 function App() {
+  
+  let [shoes] = useState(data);
+
   return (
     <div className="App">
       <Navbar expand="lg" bg="light" variant="light">
@@ -14,28 +21,35 @@ function App() {
           </Nav>
         </Container>
       </Navbar>
-      <div className="main-bg"></div>
-      <Container>
-        <Row>
-          <Col sm>
-            <img src={process.env.PUBLIC_URL + "/img/nike01.jpeg"} width="70%" alt="nike01"/>
-            <h1>상품명</h1>
-            <p>상품설명</p>
-          </Col>
-          <Col sm>
-            <img src={process.env.PUBLIC_URL + "/img/nike02.jpeg"} width="70%" alt="nike02"/>
-            <h1>상품명</h1>
-            <p>상품설명</p>
-          </Col>
-          <Col sm>
-            <img src={process.env.PUBLIC_URL + "/img/nike03.jpeg"} width="70%" alt="nike03"/>
-            <h1>상품명</h1>
-            <p>상품설명</p>
-          </Col>
-        </Row>
-      </Container>
+      
+      <Routes>
+        <Route path="/" element={
+          <div>
+            <div className="main-bg"></div>
+            <Fragment>
+              <Container>
+                <Row>
+                  {shoes.map((a, i) => <Card shoes={shoes[i]} i={i+1}></Card>)}
+                </Row>
+              </Container>
+            </Fragment>
+          </div>
+        }/>
+        <Route path="/detail" element={<Detail/>}/><Route/>
+      </Routes>
     </div>
   );
 }
+
+function Card(props){
+  return(
+    <Col sm>
+      <img src={process.env.PUBLIC_URL + '/img/nike0' + props.i +'.jpeg'} width="70%" alt="nike01"/>
+      <h5>{props.shoes.title}</h5>
+      <p>{props.shoes.content}</p>
+    </Col>
+  )
+}
+
 
 export default App;
